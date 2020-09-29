@@ -30,6 +30,17 @@ int Distance_test(){
   return (int)Fdistance;
 }
 
+void beep_twice(){
+  digitalWrite(Buzzer, HIGH);
+  delay(200);
+  digitalWrite(Buzzer, LOW);
+  delay(200);
+  digitalWrite(Buzzer, HIGH);
+  delay(200);
+  digitalWrite(Buzzer, LOW);
+  delay(600);
+}
+
 void systems_check(){
   digitalWrite(2, HIGH);
   digitalWrite(3, HIGH);
@@ -105,7 +116,7 @@ void loop() {
         digitalWrite(4, HIGH);
         digitalWrite(3, HIGH);
         delay(1);
-        digitalWrite(Buzzer, HIGH);
+        beep_twice();
     } else {
         digitalWrite(Buzzer, LOW);
   }

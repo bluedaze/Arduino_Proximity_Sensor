@@ -1,6 +1,8 @@
 int Echo = A4;
 int Trig = A5;
 int Buzzer = A0;
+int ledState;
+int ledArray[] = {2,3,4,5,6,7,8};
 
 void setup() {
   // put your setup code here, to run once:
@@ -9,14 +11,19 @@ void setup() {
   pinMode(Echo, INPUT);
   pinMode(Trig, OUTPUT);
   pinMode(Buzzer, OUTPUT);
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
+  for (int i = 0; i < 7; i++){
+    pinMode(ledArray[i], OUTPUT);
+  }
   systems_check();
+}
+
+void arrayOutput(int ledState){
+  for (int i = 0; i < 7; i++){
+    digitalWrite(ledArray[i], LOW);
+  }
+    for (int i = 0; i < ledState; i++){
+    digitalWrite(ledArray[i], HIGH);
+  }
 }
 
 int Distance_test(){
@@ -30,32 +37,27 @@ int Distance_test(){
   return (int)Fdistance;
 }
 
-void beep_twice(){
+void proximity_alarm(){
+  for (int i = 1; i < 3; i++) {
   digitalWrite(Buzzer, HIGH);
   delay(200);
   digitalWrite(Buzzer, LOW);
-  delay(200);
-  digitalWrite(Buzzer, HIGH);
-  delay(200);
-  digitalWrite(Buzzer, LOW);
+  delay(200);}
   delay(600);
 }
 
 void systems_check(){
+  for (int i = 2; i < 9; i++) {
+  digitalWrite(i, HIGH);
+  delay(100);
+  digitalWrite(i, LOW);
+  }
+  for (int i = 8; i > 2; i--) {
+  digitalWrite(i, HIGH);
+  delay(100);
+  digitalWrite(i, LOW);
+  }
   digitalWrite(2, HIGH);
-  digitalWrite(3, HIGH);
-  digitalWrite(4, HIGH);
-  digitalWrite(5, HIGH);
-  digitalWrite(6, HIGH);
-  digitalWrite(7, HIGH);
-  digitalWrite(8, HIGH);
-  delay(2000);
-  digitalWrite(3, LOW);
-  digitalWrite(4, LOW);
-  digitalWrite(5, LOW);
-  digitalWrite(6, LOW);
-  digitalWrite(7, LOW);
-  digitalWrite(8, LOW);
 }
 
 void loop() {
@@ -65,58 +67,20 @@ void loop() {
     Serial.println(distanceCM);
     int range = 0;
     range = Serial.read();
-    if (distanceCM >=40 && distanceCM <=50){
-        digitalWrite(8, HIGH);
-        digitalWrite(7, LOW);
-        digitalWrite(6, LOW);
-        digitalWrite(5, LOW);
-        digitalWrite(4, LOW);
-        digitalWrite(3, LOW);
-    } else if (distanceCM >= 35 && distanceCM <=50){
-        digitalWrite(8, HIGH);
-        digitalWrite(7, HIGH);
-        digitalWrite(6, LOW);
-        digitalWrite(5, LOW);
-        digitalWrite(4, LOW);
-        digitalWrite(3, LOW);
+    if (distanceCM >= 35 && distanceCM <=50){
+        arrayOutput(2);
     } else if (distanceCM >= 25 && distanceCM <=50){
-        digitalWrite(8, HIGH);
-        digitalWrite(7, HIGH);
-        digitalWrite(6, HIGH);
-        digitalWrite(5, LOW);
-        digitalWrite(4, LOW);
-        digitalWrite(3, LOW);
+        arrayOutput(3);
     } else if (distanceCM >= 20 && distanceCM <=50){
-        digitalWrite(8, HIGH);
-        digitalWrite(7, HIGH);
-        digitalWrite(6, HIGH);
-        digitalWrite(5, HIGH);
-        digitalWrite(4, LOW);
-        digitalWrite(3, LOW);
+        arrayOutput(4);
     } else if (distanceCM >= 15 && distanceCM <=50){
-        digitalWrite(8, HIGH);
-        digitalWrite(7, HIGH);
-        digitalWrite(6, HIGH);
-        digitalWrite(5, HIGH);
-        digitalWrite(4, HIGH);
-        digitalWrite(3, LOW);
+        arrayOutput(5);
     } else if (distanceCM >= 10 && distanceCM <=50){
-        digitalWrite(8, HIGH);
-        digitalWrite(7, HIGH);
-        digitalWrite(6, HIGH);
-        digitalWrite(5, HIGH);
-        digitalWrite(4, HIGH);
-        digitalWrite(3, HIGH);
-        digitalWrite(3, LOW);
+        arrayOutput(6);
     } else if (distanceCM >= 1 && distanceCM <10){
-        digitalWrite(8, HIGH);
-        digitalWrite(7, HIGH);
-        digitalWrite(6, HIGH);
-        digitalWrite(5, HIGH);
-        digitalWrite(4, HIGH);
-        digitalWrite(3, HIGH);
+        arrayOutput(7);
         delay(1);
-        beep_twice();
+        proximity_alarm();
     } else {
         digitalWrite(Buzzer, LOW);
   }

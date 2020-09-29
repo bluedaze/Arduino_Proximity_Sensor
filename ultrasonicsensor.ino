@@ -21,7 +21,7 @@ void arrayOutput(int ledState){
   for (int i = 0; i < 7; i++){
     digitalWrite(ledArray[i], LOW);
   }
-    for (int i = 0; i < ledState; i++){
+  for (int i = 0; i < ledState; i++){
     digitalWrite(ledArray[i], HIGH);
   }
 }
@@ -39,23 +39,24 @@ int Distance_test(){
 
 void proximity_alarm(){
   for (int i = 1; i < 3; i++) {
-  digitalWrite(Buzzer, HIGH);
-  delay(200);
-  digitalWrite(Buzzer, LOW);
-  delay(200);}
+    digitalWrite(Buzzer, HIGH);
+    delay(200);
+    digitalWrite(Buzzer, LOW);
+    delay(200);
+  }
   delay(600);
 }
 
 void systems_check(){
   for (int i = 2; i < 9; i++) {
-  digitalWrite(i, HIGH);
-  delay(100);
-  digitalWrite(i, LOW);
+    digitalWrite(i, HIGH);
+    delay(100);
+    digitalWrite(i, LOW);
   }
   for (int i = 8; i > 2; i--) {
-  digitalWrite(i, HIGH);
-  delay(100);
-  digitalWrite(i, LOW);
+    digitalWrite(i, HIGH);
+    delay(100);
+    digitalWrite(i, LOW);
   }
   digitalWrite(2, HIGH);
 }

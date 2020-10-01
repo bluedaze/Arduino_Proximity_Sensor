@@ -1,8 +1,9 @@
 int Echo = A4;
 int Trig = A5;
 int Buzzer = A0;
-int ledState;
+int ledNum;
 int ledArray[] = {2,3,4,5,6,7,8};
+int x = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -14,19 +15,20 @@ void setup() {
   for (int i = 0; i < 7; i++){
     pinMode(ledArray[i], OUTPUT);
   }
-  systems_check();
+  systemsCheck();
 }
 
-void arrayOutput(int ledState){
-  for (int i = 0; i < 7; i++){
-    digitalWrite(ledArray[i], LOW);
-  }
-  for (int i = 0; i < ledState; i++){
-    digitalWrite(ledArray[i], HIGH);
-  }
+void turnOnLED(int ledNum){
+for (int i = 7; ledNum < i; i--){
+     digitalWrite(ledArray[i], HIGH);
+     }
+for (int i = 1; ledNum > i; i++){
+     digitalWrite(ledArray[i], LOW);
+     }
 }
 
-int Distance_test(){
+void testDistance(){
+  int totalDistance;
   digitalWrite(Trig, LOW);
   delayMicroseconds(2);
   digitalWrite(Trig, HIGH);
@@ -34,10 +36,14 @@ int Distance_test(){
   digitalWrite(Trig, LOW);
   float Fdistance = pulseIn(Echo, HIGH);
   Fdistance = Fdistance / 58;
-  return (int)Fdistance;
+  totalDistance = Fdistance / 5;
+  if (totalDistance < 9) {
+    ledNum = totalDistance;
+  }
+  Serial.println(totalDistance);
 }
 
-void proximity_alarm(){
+void proximityAlarm(){
   for (int i = 1; i < 3; i++) {
     digitalWrite(Buzzer, HIGH);
     delay(200);
@@ -47,7 +53,17 @@ void proximity_alarm(){
   delay(600);
 }
 
-void systems_check(){
+void setBuzzerStatus(){
+  if (ledNum == 0){
+    proximityAlarm();
+  }
+  else{
+    digitalWrite(Buzzer, LOW);
+  }
+  
+}
+
+void systemsCheck(){
   for (int i = 2; i < 9; i++) {
     digitalWrite(i, HIGH);
     delay(100);
@@ -63,26 +79,7 @@ void systems_check(){
 
 void loop() {
   // put your main code here, to run repeatedly:
-    int distanceCM;
-    distanceCM = Distance_test();
-    Serial.println(distanceCM);
-    int range = 0;
-    range = Serial.read();
-    if (distanceCM >= 35 && distanceCM <=50){
-        arrayOutput(2);
-    } else if (distanceCM >= 25 && distanceCM <=50){
-        arrayOutput(3);
-    } else if (distanceCM >= 20 && distanceCM <=50){
-        arrayOutput(4);
-    } else if (distanceCM >= 15 && distanceCM <=50){
-        arrayOutput(5);
-    } else if (distanceCM >= 10 && distanceCM <=50){
-        arrayOutput(6);
-    } else if (distanceCM >= 1 && distanceCM <10){
-        arrayOutput(7);
-        delay(1);
-        proximity_alarm();
-    } else {
-        digitalWrite(Buzzer, LOW);
-  }
+    testDistance();
+    turnOnLED(ledNum);
+    setBuzzerStatus();
 }
